@@ -127,107 +127,181 @@
       }
 
       /* Autos como imágenes PNG perfectamente posicionadas */
-      .car {
-        position: absolute;
-        width: clamp(90px, 18vw, 120px); /* más grandes */
-        height: auto; /* dejamos que el auto se ajuste */
-        object-fit: contain;
-        cursor: pointer;
-        transition: transform 0.3s ease, filter 0.3s ease;
-        animation: subtleVibe 2s ease-in-out infinite alternate;
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.7);
-        z-index: 2;
-        top: 50%;
-        left: 50%;
-        transform-origin: center center;
-      }
 
       /* Posicionamiento específico para cada pétalo */
-      .car.petal-1 {
-        /* Arriba */
-        transform: translate(-50%, -50%) rotate(0deg) translateY(-120px)
-          rotate(-0deg);
-      }
-
-      .car.petal-2 {
-        /* Arriba-Derecha */
-        transform: translate(-50%, -50%) rotate(45deg) translateY(-120px)
-          rotate(-45deg);
-      }
-
-      .car.petal-3 {
-        /* Derecha */
-        transform: translate(-50%, -50%) rotate(90deg) translateY(-120px)
-          rotate(-90deg);
-      }
-
-      .car.petal-4 {
-        /* Abajo-Derecha */
-        transform: translate(-50%, -50%) rotate(135deg) translateY(-120px)
-          rotate(-45deg);
-      }
-
-      .car.petal-5 {
-        /* Abajo */
-        transform: translate(-50%, -50%) rotate(180deg) translateY(-120px)
-          rotate(-180deg);
-      }
-
-      .car.petal-6 {
-        /* Abajo-Izquierda */
-        transform: translate(-50%, -50%) rotate(225deg) translateY(-120px)
-          rotate(-45deg);
-      }
-
-      .car.petal-7 {
-        /* Izquierda */
-        transform: translate(-50%, -50%) rotate(270deg) translateY(-120px)
-          rotate(-90deg);
-      }
-
-      .car.petal-8 {
-        /* Arriba-Izquierda */
-        transform: translate(-50%, -50%) rotate(315deg) translateY(-120px)
-          rotate(-45deg);
-      }
 
       .car:hover {
         filter: brightness(1.3) contrast(1.2);
-        transform: translate(-50%, -50%) rotate(var(--orig-angle))
-          translateY(-120px) rotate(calc(-1 * var(--orig-angle))) scale(1.15);
+        transform: translate(-50%, -50%) rotate(var(--angle)) translateY(-120px)
+          scale(1.15);
         z-index: 10;
       }
 
       /* Animación de vibración sutil */
       @keyframes subtleVibe {
         0% {
-          transform: translate(-50%, -50%) rotate(var(--orig-angle))
-            translateY(-120px) rotate(calc(-1 * var(--orig-angle)))
-            translateY(0);
+          transform: translate(-50%, -50%) rotate(var(--angle))
+            translateY(-120px) translateY(0);
         }
         100% {
-          transform: translate(-50%, -50%) rotate(var(--orig-angle))
-            translateY(-120px) rotate(calc(-1 * var(--orig-angle)))
-            translateY(-3px);
+          transform: translate(-50%, -50%) rotate(var(--angle))
+            translateY(-120px) translateY(-3px);
         }
       }
 
       /* Entrada de autos */
-      .car {
-        animation: enterFromBottom 1s ease-out forwards;
-        opacity: 0;
-        transform: translate(-50%, 100vh) rotate(var(--orig-angle));
-      }
 
       @keyframes enterFromBottom {
         to {
           opacity: 1;
-          transform: translate(-50%, -50%) rotate(var(--orig-angle))
-            translateY(-120px) rotate(calc(-1 * var(--orig-angle)));
+          transform: translate(-50%, -50%) rotate(var(--angle))
+            translateY(-120px);
         }
       }
 
-      /* Centro del ramo */
+      /* --- Nuevo: wrapper .petal controla la posición radial y las animaciones --- */
+      .petal {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform-origin: center center;
+        --radius: -120px; /* distancia al centro */
+        transform: translate(-50%, -50%) rotate(var(--angle))
+          translateY(var(--radius));
+        animation: enterFromBottom 1s ease-out forwards,
+          subtleVibe 2s ease-in-out infinite alternate;
+        opacity: 0;
+        z-index: 2;
+      }
+
+      /* Imagen interior: mantiene su orientación final */
+
+      /* Entrada desde abajo */
+      @keyframes enterFromBottom {
+        from {
+          opacity: 0;
+          transform: translate(-50%, 100vh) rotate(var(--angle));
+        }
+        to {
+          opacity: 1;
+          transform: translate(-50%, -50%) rotate(var(--angle))
+            translateY(var(--radius));
+        }
+      }
+
+      /* Vibración sutil */
+      @keyframes subtleVibe {
+        0% {
+          transform: translate(-50%, -50%) rotate(var(--angle))
+            translateY(var(--radius)) translateY(0);
+        }
+        100% {
+          transform: translate(-50%, -50%) rotate(var(--angle))
+            translateY(var(--radius)) translateY(-3px);
+        }
+      }
+
+      /* Hover */
+      .petal:hover {
+        z-index: 10;
+      }
+      .petal:hover 
+
+/* Click escala temporal */
+.car.popped {
+        transform: rotate(var(--orient)) scale(1.15);
+      }
+
+      /* RESPONSIVE */
+      @media (max-width: 768px) {
+        .petal {
+          --radius: -90px;
+        }
+      }
+
+      /* --- Nuevo: wrapper .petal controla la posición radial y las animaciones --- */
+      .petal {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform-origin: center center;
+        --radius: -120px; /* distancia al centro */
+        --angle: 0deg;
+        --orient: 0deg;
+        transform: translate(-50%, -50%) rotate(var(--angle))
+          translateY(var(--radius));
+        animation: enterFromBottom 1s ease-out forwards,
+          subtleVibe 2s ease-in-out infinite alternate;
+        opacity: 0;
+        z-index: 6; /* por encima del centro */
+      }
+
+      /* Imagen interior: mantiene su orientación final absoluta (compensando la rotación del wrapper) */
+      .car {
+        width: clamp(90px, 18vw, 120px);
+        height: auto;
+        display: block;
+        object-fit: contain;
+        transform-origin: center center;
+        /* El rotado absoluto deseado se indica en --orient; como el wrapper ya rota por --angle,
+     el cálculo es orient - angle para que la rotación visible sea exactamente --orient */
+        transform: rotate(calc(var(--orient) - var(--angle)));
+        transition: transform 0.3s ease, filter 0.3s ease;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.7);
+        cursor: pointer;
+        pointer-events: auto;
+      }
+
+      /* Entrada desde abajo */
+      @keyframes enterFromBottom {
+        from {
+          opacity: 0;
+          transform: translate(-50%, 100vh) rotate(var(--angle));
+        }
+        to {
+          opacity: 1;
+          transform: translate(-50%, -50%) rotate(var(--angle))
+            translateY(var(--radius));
+        }
+      }
+
+      /* Vibración sutil */
+      @keyframes subtleVibe {
+        0% {
+          transform: translate(-50%, -50%) rotate(var(--angle))
+            translateY(var(--radius)) translateY(0);
+        }
+        100% {
+          transform: translate(-50%, -50%) rotate(var(--angle))
+            translateY(var(--radius)) translateY(-3px);
+        }
+      }
+
+      /* Hover: escalamos la imagen interior, manteniendo la orientación absoluta */
+      .petal:hover {
+        z-index: 10;
+      }
+      .petal:hover .car {
+        filter: brightness(1.3) contrast(1.2);
+        transform: rotate(calc(var(--orient) - var(--angle))) scale(1.15);
+      }
+
+      /* Clase temporal para clic (usa JS para añadirla/removerla) */
+      .car.popped {
+        transform: rotate(calc(var(--orient) - var(--angle))) scale(1.15);
+      }
+
+      /* RESPONSIVE */
+      @media (max-width: 768px) {
+        .car {
+          width: 15vw;
+        }
+        .petal {
+          --radius: -90px;
+        }
+      }
+
+      /* Centro del ramo */ /* Centro del ramo */
       .bouquet-center {
         position: absolute;
         width: 60px;
@@ -238,7 +312,7 @@
         left: 50%;
         transform: translate(-50%, -50%);
         box-shadow: 0 0 25px #00aaff;
-        z-index: 5;
+        z-index: 4;
         display: flex;
         justify-content: center;
         align-items: center;
@@ -434,24 +508,6 @@
           height: 80vw;
         }
 
-        .car {
-          width: 15vw;
-          height: 7.5vw;
-          transform-origin: center center;
-        }
-
-        .car.petal-1,
-        .car.petal-2,
-        .car.petal-3,
-        .car.petal-4,
-        .car.petal-5,
-        .car.petal-6,
-        .car.petal-7,
-        .car.petal-8 {
-          transform: translate(-50%, -50%) rotate(var(--orig-angle))
-            translateY(-90px);
-        }
-
         .stem {
           width: 25px;
           height: clamp(150px, 35vh, 250px);
@@ -461,69 +517,85 @@
   </head>
   <body>
     <header>
-      <h1>Ramo de Hot Wheels</h1>
+      <h1>Flor de HotWheels</h1>
       <p>¡El regalo perfecto para un verdadero velocista! 🚗💨</p>
     </header>
 
     <main>
       <div class="bouquet-wrapper">
         <div class="bouquet">
-          <!-- 8 autos como imágenes PNG perfectamente posicionadas -->
-          <img
-            class="car petal-1"
-            src="./carros/car-1.webp"
-            alt="Hot Wheels Deportivo Rojo"
-            style="--orig-angle: 0deg; --escape-right: 15%"
-          />
+          <!-- Cada petalo es un wrapper .petal con variables --angle (posición radial) y --orient (orientación final) -->
+          <div class="petal" style="--angle: 0deg; --orient: -90deg">
+            <img
+              class="car"
+              src="./carros/car-1.webp"
+              alt="Hot Wheels Deportivo Rojo"
+              style="--escape-right: 15%"
+            />
+          </div>
 
-          <img
-            class="car petal-2"
-            src="./carros/car-2.webp"
-            alt="Hot Wheels Muscle Azul"
-            style="--orig-angle: 55deg; --escape-right: 20%"
-          />
+          <div class="petal" style="--angle: 45deg; --orient: -45deg">
+            <img
+              class="car"
+              src="./carros/car-2.webp"
+              alt="Hot Wheels Muscle Azul"
+              style="--escape-right: 20%"
+            />
+          </div>
 
-          <img
-            class="car petal-3"
-            src="./carros/car-3.webp"
-            alt="Hot Wheels Clásico Naranja"
-            style="--orig-angle: 90deg; --escape-right: 25%"
-          />
+          <div class="petal" style="--angle: 90deg; --orient: 0deg">
+            <img
+              class="car"
+              src="./carros/car-3.webp"
+              alt="Hot Wheels Clásico Naranja"
+              style="--escape-right: 25%"
+            />
+          </div>
 
-          <img
-            class="car petal-4"
-            src="./carros/car-4.webp"
-            alt="Hot Wheels Superdeportivo Verde"
-            style="--orig-angle: 125deg; --escape-right: 18%"
-          />
+          <div class="petal" style="--angle: 135deg; --orient: 45deg">
+            <img
+              class="car"
+              src="./carros/car-4.webp"
+              alt="Hot Wheels Superdeportivo Verde"
+              style="--escape-right: 18%"
+            />
+          </div>
 
-          <img
-            class="car petal-5"
-            src="./carros/car-5.webp"
-            alt="Hot Wheels Deportivo Rosa"
-            style="--orig-angle: 180deg; --escape-right: 15%"
-          />
+          <div class="petal" style="--angle: 180deg; --orient: 90deg">
+            <img
+              class="car"
+              src="./carros/car-5.webp"
+              alt="Hot Wheels Deportivo Rosa"
+              style="--escape-right: 15%"
+            />
+          </div>
 
-          <img
-            class="car petal-6"
-            src="./carros/car-6.webp"
-            alt="Hot Wheels Muscle Morado"
-            style="--orig-angle: 235deg; --escape-right: 20%"
-          />
+          <div class="petal" style="--angle: 225deg; --orient: -45deg">
+            <img
+              class="car"
+              src="./carros/car-6.webp"
+              alt="Hot Wheels Muscle Morado"
+              style="--escape-right: 20%"
+            />
+          </div>
 
-          <img
-            class="car petal-7"
-            src="./carros/car-7.webp"
-            alt="Hot Wheels Clásico Amarillo"
-            style="--orig-angle: 270deg; --escape-right: 25%"
-          />
+          <div class="petal" style="--angle: 270deg; --orient: 0deg">
+            <img
+              class="car"
+              src="./carros/car-7.webp"
+              alt="Hot Wheels Clásico Amarillo"
+              style="--escape-right: 25%"
+            />
+          </div>
 
-          <img
-            class="car petal-8"
-            src="./carros/car-8.webp"
-            alt="Hot Wheels Superdeportivo Cyan"
-            style="--orig-angle: 305deg; --escape-right: 18%"
-          />
+          <div class="petal" style="--angle: 315deg; --orient: 45deg">
+            <img
+              class="car"
+              src="./carros/car-8.webp"
+              alt="Hot Wheels Superdeportivo Cyan"
+              style="--escape-right: 18%"
+            />
+          </div>
 
           <div class="bouquet-center">HW</div>
         </div>
@@ -617,37 +689,24 @@
 
       cars.forEach((car, index) => {
         car.addEventListener("click", () => {
-          // Reproducir sonido único
           const sound = document.getElementById(carSounds[index]);
           sound.currentTime = 0;
           sound
             .play()
             .catch((e) => console.log("Error reproduciendo sonido:", e));
-
-          // Acelerar: scale extra manteniendo la posición
-          const transformValues = car.style.transform.split(" ");
-          transformValues[transformValues.length - 1] = "scale(1.15)";
-          car.style.transform = transformValues.join(" ");
-
-          // Crear humo que sale del escape
+          car.classList.add("popped");
           for (let i = 0; i < 3; i++) {
             setTimeout(() => {
               const smoke = document.createElement("div");
               smoke.className = "smoke";
-
-              // Usar posición específica del escape para este auto
-              smoke.style.right = car.style.getPropertyValue("--escape-right");
+              smoke.style.right =
+                car.style.getPropertyValue("--escape-right") || "20%";
               car.appendChild(smoke);
-
               setTimeout(() => smoke.remove(), 1500);
             }, i * 300);
           }
-
-          // Volver a posición normal
           setTimeout(() => {
-            const transformValues = car.style.transform.split(" ");
-            transformValues[transformValues.length - 1] = "scale(1)";
-            car.style.transform = transformValues.join(" ");
+            car.classList.remove("popped");
           }, 800);
         });
       });
@@ -705,8 +764,8 @@
       });
 
       // 5. Animación de entrada escalonada para autos
-      document.querySelectorAll(".car").forEach((car, index) => {
-        car.style.animationDelay = `${index * 0.15}s`;
+      document.querySelectorAll(".petal").forEach((petal, index) => {
+        petal.style.animationDelay = `${index * 0.15}s`;
       });
     </script>
   </body>
