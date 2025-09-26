@@ -1,0 +1,760 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Ramo de Hot Wheels Animado</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Bangers&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: "Orbitron", sans-serif;
+        background: linear-gradient(
+          135deg,
+          #0f0f0f 0%,
+          #1a1a1a 50%,
+          #0f0f0f 100%
+        );
+        color: #fff;
+        overflow-x: hidden;
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+        position: relative;
+      }
+
+      /* Efectos de luces animadas en fondo */
+      body::before {
+        content: "";
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(
+          90deg,
+          transparent 0%,
+          rgba(0, 150, 255, 0.1) 50%,
+          transparent 100%
+        );
+        animation: neonSweep 3s linear infinite;
+        z-index: -1;
+      }
+
+      body::after {
+        content: "";
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(
+          0deg,
+          transparent 0%,
+          rgba(255, 50, 50, 0.1) 50%,
+          transparent 100%
+        );
+        animation: neonSweep 3s linear infinite reverse;
+        z-index: -1;
+      }
+
+      @keyframes neonSweep {
+        0% {
+          transform: translateX(-100%);
+        }
+        100% {
+          transform: translateX(100%);
+        }
+      }
+
+      /* Header con colores varoniles (azul y rojo) */
+      header {
+        text-align: center;
+        padding: clamp(1rem, 5vh, 3rem);
+        background: rgba(0, 0, 0, 0.5);
+        border-bottom: 2px solid #0077ff;
+      }
+
+      header h1 {
+        font-family: "Bangers", cursive;
+        font-size: clamp(2rem, 5vw, 4rem);
+        color: #ff3333;
+        text-shadow: 0 0 10px #ff3333;
+        margin-bottom: 0.5rem;
+        letter-spacing: 2px;
+      }
+
+      header p {
+        font-size: clamp(1rem, 2vw, 1.5rem);
+        opacity: 0.8;
+        color: #3399ff;
+      }
+
+      /* Main - Ramo */
+      main {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        padding: 2rem;
+        position: relative;
+      }
+
+      .bouquet-container {
+        position: relative;
+        width: clamp(300px, 60vw, 500px);
+        height: clamp(300px, 60vw, 500px);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+
+      .bouquet {
+        position: relative;
+        width: 100%;
+        height: 100%;
+      }
+
+      /* Autos Hot Wheels con estilos únicos */
+      .car {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        cursor: pointer;
+        transition: transform 0.3s ease, filter 0.3s ease;
+        animation: subtleVibe 2s ease-in-out infinite alternate;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.7);
+        z-index: 2;
+        transform: translate(-50%, -50%) rotate(var(--angle)) translateY(0)
+          translateX(var(--radius));
+      }
+
+      /* Estilos únicos para cada tipo de auto */
+      .sports-car {
+        width: clamp(45px, 11vw, 75px);
+        height: clamp(18px, 4.5vw, 25px);
+        background: linear-gradient(135deg, var(--color1), var(--color2));
+        border-radius: 8px 15px 4px 4px;
+      }
+
+      .muscle-car {
+        width: clamp(50px, 12vw, 80px);
+        height: clamp(22px, 5.5vw, 30px);
+        background: linear-gradient(135deg, var(--color1), var(--color2));
+        border-radius: 5px 5px 3px 3px;
+      }
+
+      .classic-car {
+        width: clamp(55px, 13vw, 85px);
+        height: clamp(20px, 5vw, 28px);
+        background: linear-gradient(135deg, var(--color1), var(--color2));
+        border-radius: 8px 8px 2px 2px;
+      }
+
+      .super-car {
+        width: clamp(40px, 10vw, 70px);
+        height: clamp(16px, 4vw, 22px);
+        background: linear-gradient(135deg, var(--color1), var(--color2));
+        border-radius: 10px 15px 3px 3px;
+      }
+
+      /* Detalles específicos para cada tipo */
+      .sports-car::before {
+        content: "";
+        position: absolute;
+        width: 60%;
+        height: 35%;
+        background: rgba(0, 0, 0, 0.2);
+        border-radius: 5px 8px 0 0;
+        top: 0;
+        left: 20%;
+      }
+
+      .muscle-car::before {
+        content: "";
+        position: absolute;
+        width: 70%;
+        height: 30%;
+        background: rgba(0, 0, 0, 0.2);
+        border-radius: 3px 3px 0 0;
+        top: 0;
+        left: 15%;
+      }
+
+      .classic-car::before {
+        content: "";
+        position: absolute;
+        width: 50%;
+        height: 40%;
+        background: rgba(0, 0, 0, 0.2);
+        border-radius: 5px 5px 0 0;
+        top: 0;
+        left: 25%;
+      }
+
+      .super-car::before {
+        content: "";
+        position: absolute;
+        width: 55%;
+        height: 45%;
+        background: rgba(0, 0, 0, 0.2);
+        border-radius: 7px 10px 0 0;
+        top: 0;
+        left: 22%;
+      }
+
+      /* Escape específico para cada tipo */
+      .car::after {
+        content: "";
+        position: absolute;
+        width: 4px;
+        height: 6px;
+        background: #333;
+        border-radius: 1px;
+        bottom: -3px;
+      }
+
+      .sports-car::after {
+        right: 15%;
+      }
+
+      .muscle-car::after {
+        right: 20%;
+      }
+
+      .classic-car::after {
+        right: 25%;
+      }
+
+      .super-car::after {
+        right: 18%;
+      }
+
+      .car:hover {
+        filter: brightness(1.3) contrast(1.2);
+        transform: translate(-50%, -50%) rotate(var(--angle))
+          translateX(var(--radius)) scale(1.15);
+        z-index: 10;
+      }
+
+      /* Ruedas detalladas */
+      .wheel {
+        position: absolute;
+        width: 10px;
+        height: 10px;
+        background: #222;
+        border-radius: 50%;
+        border: 2px solid #444;
+        bottom: -3px;
+      }
+
+      .wheel::before {
+        content: "";
+        position: absolute;
+        width: 4px;
+        height: 4px;
+        background: #888;
+        border-radius: 50%;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+      }
+
+      .wheel-front {
+        left: 5px;
+      }
+
+      .wheel-back {
+        right: 5px;
+      }
+
+      /* Animación de vibración sutil */
+      @keyframes subtleVibe {
+        0% {
+          transform: translate(-50%, -50%) rotate(var(--angle))
+            translateX(var(--radius)) translateY(0);
+        }
+        100% {
+          transform: translate(-50%, -50%) rotate(var(--angle))
+            translateX(var(--radius)) translateY(-3px);
+        }
+      }
+
+      /* Entrada de autos */
+      .car {
+        animation: enterFromBottom 1s ease-out forwards;
+        opacity: 0;
+        transform: translate(-50%, 100vh) rotate(var(--angle));
+      }
+
+      @keyframes enterFromBottom {
+        to {
+          opacity: 1;
+          transform: translate(-50%, -50%) rotate(var(--angle))
+            translateX(var(--radius));
+        }
+      }
+
+      /* Centro del ramo */
+      .bouquet-center {
+        position: absolute;
+        width: 50px;
+        height: 50px;
+        background: linear-gradient(135deg, #ff3333, #ff9900);
+        border-radius: 50%;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        box-shadow: 0 0 20px #ff9900;
+        z-index: 5;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        color: #000;
+        font-weight: bold;
+        font-size: 20px;
+      }
+
+      /* Tallo de la flor mejorado */
+      .stem {
+        position: relative;
+        width: 20px;
+        height: clamp(60px, 15vh, 120px);
+        background: linear-gradient(to bottom, #22aa22, #007700);
+        margin: 20px auto 0;
+        border-radius: 5px 5px 0 0;
+        box-shadow: 0 0 10px rgba(0, 255, 0, 0.3);
+      }
+
+      .stem::before {
+        content: "";
+        position: absolute;
+        width: 30px;
+        height: 15px;
+        background: #22aa22;
+        bottom: -7px;
+        left: 50%;
+        transform: translateX(-50%);
+        border-radius: 5px;
+      }
+
+      .stem::after {
+        content: "";
+        position: absolute;
+        width: 40px;
+        height: 20px;
+        background: #ff3333;
+        bottom: -25px;
+        left: 50%;
+        transform: translateX(-50%);
+        border-radius: 5px 5px 0 0;
+        box-shadow: 0 0 15px rgba(255, 51, 51, 0.5);
+      }
+
+      /* Hojas del tallo */
+      .leaf {
+        position: absolute;
+        width: 25px;
+        height: 15px;
+        background: #33cc33;
+        border-radius: 0 15px 15px 0;
+        left: -20px;
+        animation: leafWave 3s ease-in-out infinite;
+      }
+
+      .leaf-1 {
+        top: 20%;
+        transform: rotate(-10deg);
+      }
+
+      .leaf-2 {
+        top: 60%;
+        transform: rotate(-5deg);
+      }
+
+      @keyframes leafWave {
+        0%,
+        100% {
+          transform: rotate(-10deg) scaleX(1);
+        }
+        50% {
+          transform: rotate(-8deg) scaleX(1.1);
+        }
+      }
+
+      /* Rayas de velocidad */
+      .speed-line {
+        position: fixed;
+        width: 2px;
+        height: 30px;
+        background: linear-gradient(
+          to bottom,
+          transparent,
+          rgba(255, 255, 255, 0.8),
+          transparent
+        );
+        top: -30px;
+        left: var(--x, 0%);
+        animation: fall 1s linear forwards;
+        z-index: -1;
+      }
+
+      @keyframes fall {
+        to {
+          top: 100vh;
+          opacity: 0;
+        }
+      }
+
+      /* Humo mejorado que sale del escape */
+      .smoke {
+        position: absolute;
+        width: 8px;
+        height: 8px;
+        background: rgba(150, 150, 150, 0.8);
+        border-radius: 50%;
+        pointer-events: none;
+        animation: smokeRise 1.5s ease-out forwards;
+        z-index: 1;
+        filter: blur(2px);
+      }
+
+      @keyframes smokeRise {
+        0% {
+          transform: translate(0, 0) scale(0.5);
+          opacity: 1;
+        }
+        50% {
+          opacity: 0.7;
+        }
+        100% {
+          transform: translate(var(--smoke-offset-x), -50px) scale(2.5);
+          opacity: 0;
+        }
+      }
+
+      /* Footer */
+      footer {
+        text-align: center;
+        padding: clamp(1rem, 3vh, 2rem);
+        background: rgba(0, 0, 0, 0.5);
+        border-top: 2px solid #0077ff;
+      }
+
+      footer button {
+        background: #ff3333;
+        color: #fff;
+        border: none;
+        padding: 0.8rem 1.5rem;
+        margin: 0 0.5rem;
+        border-radius: 5px;
+        cursor: pointer;
+        font-family: "Orbitron", sans-serif;
+        font-size: 1rem;
+        transition: all 0.3s;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+      }
+
+      footer button:hover {
+        background: #3399ff;
+        transform: translateY(-2px);
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.4);
+      }
+
+      footer p {
+        margin-top: 1rem;
+        opacity: 0.9;
+        font-size: clamp(0.8rem, 2vw, 1rem);
+        color: #3399ff;
+      }
+
+      /* Responsividad */
+      @media (max-width: 768px) {
+        .bouquet-container {
+          width: 80vw;
+          height: 80vw;
+        }
+
+        .sports-car {
+          width: 13vw;
+          height: 5vw;
+        }
+        .muscle-car {
+          width: 14vw;
+          height: 6vw;
+        }
+        .classic-car {
+          width: 15vw;
+          height: 6vw;
+        }
+        .super-car {
+          width: 12vw;
+          height: 4.5vw;
+        }
+
+        .wheel {
+          width: 8px;
+          height: 8px;
+        }
+
+        .wheel::before {
+          width: 3px;
+          height: 3px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <h1>Ramo de Hot Wheels</h1>
+      <p>¡El regalo perfecto para un verdadero velocista! 🚗💨</p>
+    </header>
+
+    <main>
+      <div class="bouquet-container">
+        <div class="bouquet">
+          <!-- 8 autos únicos en forma de flor/ramo -->
+          <div
+            class="car sports-car"
+            style="
+              --color1: #ff3333;
+              --color2: #ff6666;
+              --angle: 0deg;
+              --radius: 110px;
+            "
+          >
+            <div class="wheel wheel-front"></div>
+            <div class="wheel wheel-back"></div>
+          </div>
+          <div
+            class="car muscle-car"
+            style="
+              --color1: #3399ff;
+              --color2: #66aaff;
+              --angle: 45deg;
+              --radius: 110px;
+            "
+          >
+            <div class="wheel wheel-front"></div>
+            <div class="wheel wheel-back"></div>
+          </div>
+          <div
+            class="car classic-car"
+            style="
+              --color1: #ff9900;
+              --color2: #ffcc66;
+              --angle: 90deg;
+              --radius: 110px;
+            "
+          >
+            <div class="wheel wheel-front"></div>
+            <div class="wheel wheel-back"></div>
+          </div>
+          <div
+            class="car super-car"
+            style="
+              --color1: #33cc33;
+              --color2: #66ff66;
+              --angle: 135deg;
+              --radius: 110px;
+            "
+          >
+            <div class="wheel wheel-front"></div>
+            <div class="wheel wheel-back"></div>
+          </div>
+          <div
+            class="car sports-car"
+            style="
+              --color1: #ff66cc;
+              --color2: #ff99dd;
+              --angle: 180deg;
+              --radius: 110px;
+            "
+          >
+            <div class="wheel wheel-front"></div>
+            <div class="wheel wheel-back"></div>
+          </div>
+          <div
+            class="car muscle-car"
+            style="
+              --color1: #9966ff;
+              --color2: #bb99ff;
+              --angle: 225deg;
+              --radius: 110px;
+            "
+          >
+            <div class="wheel wheel-front"></div>
+            <div class="wheel wheel-back"></div>
+          </div>
+          <div
+            class="car classic-car"
+            style="
+              --color1: #ffcc00;
+              --color2: #ffdd66;
+              --angle: 270deg;
+              --radius: 110px;
+            "
+          >
+            <div class="wheel wheel-front"></div>
+            <div class="wheel wheel-back"></div>
+          </div>
+          <div
+            class="car super-car"
+            style="
+              --color1: #00ccff;
+              --color2: #66ddff;
+              --angle: 315deg;
+              --radius: 110px;
+            "
+          >
+            <div class="wheel wheel-front"></div>
+            <div class="wheel wheel-back"></div>
+          </div>
+
+          <div class="bouquet-center">HW</div>
+        </div>
+      </div>
+      <div class="stem">
+        <div class="leaf leaf-1"></div>
+        <div class="leaf leaf-2"></div>
+      </div>
+    </main>
+
+    <footer>
+      <button id="shareBtn">Compartir este ramo 🚗💨</button>
+      <button id="muteBtn">🔊</button>
+      <!-- Audio placeholder: Reemplaza src con un archivo real de música instrumental rock/electro -->
+      <audio id="bgMusic" loop preload="auto">
+        <source src="https://example.com/music.mp3" type="audio/mpeg" />
+        Tu navegador no soporta audio.
+      </audio>
+      <p>¡Acelera la diversión con este ramo de alta velocidad!</p>
+    </footer>
+
+    <script>
+      // Interactividad JavaScript
+
+      // 1. Fondo dinámico: Rayas de velocidad
+      function createSpeedLine() {
+        const line = document.createElement("div");
+        line.className = "speed-line";
+        line.style.setProperty("--x", Math.random() * 100 + "%");
+        document.body.appendChild(line);
+        setTimeout(() => line.remove(), 1000);
+      }
+
+      // Generar rayas cada 200ms
+      setInterval(createSpeedLine, 200);
+
+      // 2. Efecto click en autos con humo desde el escape
+      document.querySelectorAll(".car").forEach((car, index) => {
+        car.addEventListener("click", () => {
+          // Acelerar: scale y rotate extra
+          car.style.transform = `translate(-50%, -50%) rotate(calc(var(--angle) + ${
+            index * 15
+          }deg)) translateX(var(--radius)) scale(1.3)`;
+
+          // Crear humo que sale exactamente del escape
+          for (let i = 0; i < 3; i++) {
+            setTimeout(() => {
+              const smoke = document.createElement("div");
+              smoke.className = "smoke";
+
+              // Calcular posición del escape basado en el tipo de auto
+              const carType = Array.from(car.classList).find(
+                (cls) =>
+                  cls.includes("sports") ||
+                  cls.includes("muscle") ||
+                  cls.includes("classic") ||
+                  cls.includes("super")
+              );
+
+              let offsetX = 0;
+              if (carType === "sports-car") offsetX = "-15%";
+              if (carType === "muscle-car") offsetX = "-20%";
+              if (carType === "classic-car") offsetX = "-25%";
+              if (carType === "super-car") offsetX = "-18%";
+
+              smoke.style.setProperty("--smoke-offset-x", offsetX);
+              smoke.style.left = "50%";
+              smoke.style.bottom = "0";
+              car.appendChild(smoke);
+              setTimeout(() => smoke.remove(), 1500);
+            }, i * 300);
+          }
+
+          // Volver a posición
+          setTimeout(() => {
+            car.style.transform = `translate(-50%, -50%) rotate(var(--angle)) translateX(var(--radius))`;
+          }, 800);
+        });
+      });
+
+      // 3. Audio de fondo
+      const audio = document.getElementById("bgMusic");
+      const muteBtn = document.getElementById("muteBtn");
+      let isPlaying = false;
+
+      muteBtn.addEventListener("click", () => {
+        if (isPlaying) {
+          audio.pause();
+          muteBtn.textContent = "🔇";
+          isPlaying = false;
+        } else {
+          audio
+            .play()
+            .catch((e) => console.log("Error reproduciendo audio:", e));
+          muteBtn.textContent = "🔊";
+          isPlaying = true;
+        }
+      });
+
+      // Auto-play si es posible
+      document.addEventListener(
+        "click",
+        () => {
+          if (!isPlaying) {
+            audio.play().catch((e) => {});
+            muteBtn.textContent = "🔊";
+            isPlaying = true;
+          }
+        },
+        { once: true }
+      );
+
+      // 4. Botón de compartir
+      const shareBtn = document.getElementById("shareBtn");
+      shareBtn.addEventListener("click", async () => {
+        if (navigator.share) {
+          try {
+            await navigator.share({
+              title: "Ramo de Hot Wheels",
+              text: "¡Mira este increíble ramo de autos de colección! 🚗💨",
+              url: window.location.href,
+            });
+          } catch (err) {
+            navigator.clipboard.writeText(window.location.href);
+            alert("URL copiada al portapapeles");
+          }
+        } else {
+          navigator.clipboard.writeText(window.location.href);
+          alert("URL copiada al portapapeles: " + window.location.href);
+        }
+      });
+
+      // 5. Animación de entrada escalonada para autos
+      document.querySelectorAll(".car").forEach((car, index) => {
+        car.style.animationDelay = `${index * 0.15}s`;
+      });
+    </script>
+  </body>
+</html>
