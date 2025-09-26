@@ -215,7 +215,12 @@
       /* RESPONSIVE */
       @media (max-width: 768px) {
         .car {
-          width: clamp(150px, 35vw, 260px); /* más grandes en móvil */
+          width: 23vw !important; /* fuerza el tamaño mayor en móviles */
+          max-width: none !important;
+          min-width: 0 !important;
+        }
+        .petal {
+          --radius: 200px; /* ajusta si se amontonan */
         }
       }
       /* --- Nuevo: wrapper .petal controla la posición radial y las animaciones --- */
@@ -513,6 +518,25 @@
         }
       }
     </style>
+    <meta property="og:image" content="./assets/img/og-cover.webp" />
+    <link
+      rel="apple-touch-icon"
+      sizes="180x180"
+      href="./assets/favicon_io/apple-touch-icon.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="32x32"
+      href="./assets/favicon_io/favicon-32x32.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="16x16"
+      href="./assets/favicon_io/favicon-16x16.png"
+    />
+    <link rel="manifest" href="./assets/favicon_io/site.webmanifest" />
   </head>
   <body>
     <header>
