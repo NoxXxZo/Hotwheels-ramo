@@ -214,11 +214,10 @@
 
       /* RESPONSIVE */
       @media (max-width: 768px) {
-        .petal {
-          --radius: -90px;
+        .car {
+          width: clamp(150px, 35vw, 260px); /* más grandes en móvil */
         }
       }
-
       /* --- Nuevo: wrapper .petal controla la posición radial y las animaciones --- */
       .petal {
         position: absolute;
