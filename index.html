@@ -14,7 +14,11 @@
         padding: 0;
         box-sizing: border-box;
       }
-
+      img {
+        -webkit-user-drag: none;
+        user-drag: none;
+        pointer-events: none; /* opcional: desactiva interacciones con la imagen */
+      }
       body {
         font-family: "Orbitron", sans-serif;
         background: linear-gradient(
@@ -105,11 +109,18 @@
 
       header h1 {
         font-family: "Bangers", cursive;
-        font-size: clamp(2rem, 5vw, 4rem);
-        color: #ffffff;
-        text-shadow: 0 0 10px #ff3333;
+        font-size: clamp(2.2rem, 5vw, 4.5rem);
+        background: linear-gradient(
+          90deg,
+          #ffcc00 20%,
+          #ff6600 50%,
+          #ff0000 100%
+        );
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        text-shadow: 1px 2px 8px rgba(255, 0, 0, 0.6);
         margin-bottom: 0.5rem;
-        letter-spacing: 2px;
+        letter-spacing: 3px;
       }
 
       header p {
@@ -334,7 +345,7 @@
         position: absolute;
         width: 60px;
         height: 60px;
-        background: linear-gradient(135deg, #0e63f5, #ff1919);
+        background: linear-gradient(170deg, #005eff, #ff0000);
         border-radius: 50%;
         top: 50%;
         left: 50%;
@@ -348,7 +359,13 @@
         font-weight: bold;
         font-size: 22px;
       }
-
+      .bouquet-center img {
+        max-width: 100%;
+        max-height: 100%;
+        object-fit: contain;
+        display: block;
+        pointer-events: none; /* evita interferir con clics */
+      }
       /* Tallo de la flor extendido y mejorado */
       .stem {
         position: absolute;
@@ -528,9 +545,34 @@
       audio {
         display: none;
       }
+      /* --- Lluvia de cajitas HotWheels --- */
+      .falling-box {
+        position: fixed;
+        top: -80px;
+        width: 40px;
+        height: auto;
+        opacity: 0.9;
+        pointer-events: none;
+        z-index: 0; /* detrás de todo tu contenido */
+        animation: fallBox linear forwards;
+      }
 
+      /* Animación de caída */
+      @keyframes fallBox {
+        0% {
+          transform: translateY(0) rotate(0deg);
+          opacity: 0.9;
+        }
+        100% {
+          transform: translateY(110vh) rotate(360deg);
+          opacity: 0;
+        }
+      }
       /* Responsividad */
       @media (max-width: 768px) {
+        .falling-box {
+          width: 45px;
+        }
         .bouquet-wrapper {
           width: 80vw;
           height: 80vw;
@@ -540,7 +582,191 @@
           width: 25px;
           height: clamp(150px, 35vh, 250px);
         }
+        .bottom-flowers {
+          bottom: 18px;
+          gap: 12px;
+        }
+        .mini-flower {
+          width: 56px;
+          animation-duration: 2600ms;
+        }
+        .flower-head {
+          width: 40px;
+          height: 40px;
+        }
+        .mini-petal {
+          width: 16px;
+          height: 22px;
+          transform: translate(-50%, -50%) rotate(0deg) translateY(-12px);
+        }
+        .mini-petal.p1 {
+          transform: translate(-50%, -50%) rotate(0deg) translateY(-12px);
+        }
+        .mini-petal.p2 {
+          transform: translate(-50%, -50%) rotate(90deg) translateY(-12px);
+        }
+        .mini-petal.p3 {
+          transform: translate(-50%, -50%) rotate(180deg) translateY(-12px);
+        }
+        .mini-petal.p4 {
+          transform: translate(-50%, -50%) rotate(270deg) translateY(-12px);
+        }
+        .flower-center {
+          width: 9px;
+          height: 9px;
+        }
+        .mini-stem {
+          height: 28px;
+        }
+        .mini-box {
+          top: -58px;
+          width: 36px;
+        }
       }
+      /* --- FLORES INFERIORES (Aisladas, no tocan estilos existentes) --- */
+      .bottom-flowers {
+        position: absolute;
+        bottom: 32px;
+        left: 50%;
+        transform: translateX(-50%);
+        display: flex;
+        gap: 22px;
+        z-index: 3; /* debajo de la flor central (que tiene z-index:4) */
+        pointer-events: none; /* no interfieren con los clicks del ramo central */
+      }
+
+      /* cada flor pequeña */
+      .mini-flower {
+        position: relative;
+        width: 86px; /* caja útil para centrar cabeza + imagen */
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        animation: mini-sway 3200ms ease-in-out infinite alternate;
+      }
+
+      /* cabeza de la flor (contenedor) */
+      .flower-head {
+        position: relative;
+        width: 56px;
+        height: 56px;
+        z-index: 2; /* por encima del tallo, pero por debajo del centro del ramo */
+      }
+
+      /* pétalos: 4 piezas idénticas rotadas.
+   Forma inspirada en tu .blue-petal (curvas suaves) */
+      .mini-petal {
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        width: 26px;
+        height: 34px;
+        background: radial-gradient(circle at 30% 25%, #ff4b4b 0%, #b20000 80%);
+        border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+        filter: drop-shadow(0 0 6px rgba(255, 75, 75, 0.9));
+        transform-origin: center center;
+        transform: translate(-50%, -50%) rotate(0deg) translateY(-18px);
+        box-shadow: 0 3px 6px rgba(0, 0, 0, 0.25) inset;
+      }
+
+      /* colocación de cada pétalo (rotaciones a 0/90/180/270) */
+      .mini-petal.p1 {
+        transform: translate(-50%, -50%) rotate(0deg) translateY(-18px);
+      }
+      .mini-petal.p2 {
+        transform: translate(-50%, -50%) rotate(90deg) translateY(-18px);
+      }
+      .mini-petal.p3 {
+        transform: translate(-50%, -50%) rotate(180deg) translateY(-18px);
+      }
+      .mini-petal.p4 {
+        transform: translate(-50%, -50%) rotate(270deg) translateY(-18px);
+      }
+
+      /* centro café */
+      .flower-center {
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        width: 14px;
+        height: 14px;
+        transform: translate(-50%, -50%);
+        border-radius: 50%;
+        background: radial-gradient(circle at 35% 30%, #7a3f18 0%, #351a08 90%);
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
+        z-index: 3;
+      }
+
+      /* tallo pequeño (no toca tu .stem global) */
+      .mini-stem {
+        width: 6px;
+        height: 40px;
+        margin-top: 6px;
+        border-radius: 4px;
+        background: linear-gradient(to bottom, #29a329, #066006);
+        box-shadow: 0 0 4px rgba(0, 200, 0, 0.25);
+        z-index: 1;
+      }
+
+      /* caja HotWheels FLOTA ENCIMA de la flor (no dentro) */
+      .mini-box {
+        position: absolute;
+        top: -84px; /* ajusta la distancia arriba de la flor */
+        width: 52px; /* reduce las imágenes enormes a tamaño pequeño */
+        height: auto;
+        z-index: 4; /* por encima de la flor, PERO por debajo de la flor central (z-index:4 en tu HTML es del centro) */
+        transform: rotate(-6deg);
+        pointer-events: none; /* no captura clicks */
+        image-rendering: -webkit-optimize-contrast;
+        transition: transform 0.18s ease;
+      }
+
+      /* efecto sutil en hover (si quieres permitir interacción visual) */
+      .mini-flower:hover .mini-box {
+        transform: translateY(-4px) rotate(-3deg);
+      }
+
+      /* desfases para que no se muevan todos a la vez (más natural) */
+      .bottom-flowers .mini-flower:nth-child(1) {
+        animation-delay: 0s;
+      }
+      .bottom-flowers .mini-flower:nth-child(2) {
+        animation-delay: 0.12s;
+      }
+      .bottom-flowers .mini-flower:nth-child(3) {
+        animation-delay: 0.24s;
+      }
+      .bottom-flowers .mini-flower:nth-child(4) {
+        animation-delay: 0.08s;
+      }
+      .bottom-flowers .mini-flower:nth-child(5) {
+        animation-delay: 0.2s;
+      }
+      .bottom-flowers .mini-flower:nth-child(6) {
+        animation-delay: 0.04s;
+      }
+
+      /* animación de tambaleo (sway) */
+      @keyframes mini-sway {
+        0% {
+          transform: translateY(0) rotate(-3deg);
+        }
+        50% {
+          transform: translateY(-3px) rotate(4deg);
+        }
+        100% {
+          transform: translateY(0) rotate(-3deg);
+        }
+      }
+      /* Logo dentro del título */
+      .logo-inline {
+        height: 3.2em; /* se ajusta al tamaño del texto */
+        vertical-align: middle;
+        margin-left: 6px;
+        filter: drop-shadow(0 0 6px rgba(255, 50, 50, 0.7));
+      }
+
+      /* --- RESPONSIVE: MÁS PEQUEÑAS EN MÓVIL --- */
     </style>
     <meta property="og:image" content="./assets/img/og-cover.webp" />
     <link
@@ -564,8 +790,15 @@
   </head>
   <body>
     <header>
-      <h1>Flor de HotWheels</h1>
-      <p>¡El regalo perfecto para un verdadero velocista! 🚗💨</p>
+      <h1>
+        Tú ramo de
+        <img
+          src="./carros/htw-logo.webp"
+          alt="Hot Wheels Logo"
+          class="logo-inline"
+        />
+      </h1>
+      <p>✨ El regalo más veloz y coleccionable del mundo. 🚗💨</p>
     </header>
 
     <main>
@@ -652,7 +885,9 @@
             />
           </div>
 
-          <div class="bouquet-center">HW</div>
+          <div class="bouquet-center">
+            <img src="./carros/htw-logo.webp" alt="Hot Wheels Logo" />
+          </div>
         </div>
       </div>
 
@@ -662,6 +897,73 @@
         <div class="leaf leaf-2"></div>
         <div class="leaf leaf-3"></div>
       </div>
+      <!-- --- FLORES INFERIORES (NO MODIFICA FLORES CENTRALES) --- -->
+      <div class="bottom-flowers" aria-hidden="true">
+        <div class="mini-flower">
+          <div class="flower-head">
+            <div class="mini-petal p1"></div>
+            <div class="mini-petal p2"></div>
+            <div class="mini-petal p3"></div>
+            <div class="mini-petal p4"></div>
+            <div class="flower-center"></div>
+          </div>
+          <div class="mini-stem"></div>
+          <img
+            class="mini-box"
+            src="./carros/htw1.webp"
+            alt="Caja Hot Wheels 1"
+          />
+        </div>
+
+        <div class="mini-flower">
+          <div class="flower-head">
+            <div class="mini-petal p1"></div>
+            <div class="mini-petal p2"></div>
+            <div class="mini-petal p3"></div>
+            <div class="mini-petal p4"></div>
+            <div class="flower-center"></div>
+          </div>
+          <div class="mini-stem"></div>
+          <img
+            class="mini-box"
+            src="./carros/htw2.webp"
+            alt="Caja Hot Wheels 2"
+          />
+        </div>
+
+        <div class="mini-flower">
+          <div class="flower-head">
+            <div class="mini-petal p1"></div>
+            <div class="mini-petal p2"></div>
+            <div class="mini-petal p3"></div>
+            <div class="mini-petal p4"></div>
+            <div class="flower-center"></div>
+          </div>
+          <div class="mini-stem"></div>
+          <img
+            class="mini-box"
+            src="./carros/htw3.webp"
+            alt="Caja Hot Wheels 3"
+          />
+        </div>
+
+        <div class="mini-flower">
+          <div class="flower-head">
+            <div class="mini-petal p1"></div>
+            <div class="mini-petal p2"></div>
+            <div class="mini-petal p3"></div>
+            <div class="mini-petal p4"></div>
+            <div class="flower-center"></div>
+          </div>
+          <div class="mini-stem"></div>
+          <img
+            class="mini-box"
+            src="./carros/htw4.webp"
+            alt="Caja Hot Wheels 4"
+          />
+        </div>
+      </div>
+      <!-- --- fin flores inferiores --- -->
     </main>
 
     <footer>
@@ -697,7 +999,10 @@
       <audio id="carSound8" preload="auto">
         <source src="./carros/song/bronco.mp3" type="audio/mpeg" />
       </audio>
-      <p>¡Acelera la diversión con este ramo de alta velocidad!</p>
+      <p>
+        Este ramo de velocidad llega a la meta, pero el verdadero premio eres
+        tú, gracias por visitar mi mundo.
+      </p>
       <p>
         <a href="mailto:camachodigitalstudio@gmail.com">
           camachodigitalstudio@gmail.com
@@ -821,6 +1126,45 @@
       // 5. Animación de entrada escalonada para autos
       document.querySelectorAll(".petal").forEach((petal, index) => {
         petal.style.animationDelay = `${index * 0.15}s`;
+      });
+      // --- Lluvia de cajitas HotWheels ---
+      const boxImages = [
+        "./carros/htw1.webp",
+        "./carros/htw2.webp",
+        "./carros/htw3.webp",
+        "./carros/htw4.webp",
+        "./carros/htw5.webp",
+        "./carros/htw6.webp",
+      ];
+
+      function createFallingBox() {
+        const box = document.createElement("img");
+        box.src = boxImages[Math.floor(Math.random() * boxImages.length)];
+        box.className = "falling-box";
+
+        // Posición inicial aleatoria (en X)
+        box.style.left = Math.random() * 100 + "vw";
+
+        // Duración y retraso aleatorios para variación
+        const duration = 6 + Math.random() * 4; // 6–10 segundos
+        box.style.animationDuration = duration + "s";
+
+        // Tamaño aleatorio (30px – 50px)
+        const size = 30 + Math.random() * 20;
+        box.style.width = size + "px";
+
+        document.body.appendChild(box);
+
+        // Remover cuando termine la animación
+        setTimeout(() => {
+          box.remove();
+        }, duration * 1000);
+      }
+
+      // Generar una cajita nueva cada 700ms
+      setInterval(createFallingBox, 1000);
+      document.addEventListener("contextmenu", function (e) {
+        e.preventDefault();
       });
     </script>
   </body>
